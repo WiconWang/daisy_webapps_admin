@@ -7,7 +7,7 @@ export const addArticle = (params) => {
     content:params.content
   } */
   return axios.request({
-    url: '/article',
+    url: '/articles',
     params,
     method: 'post'
   })
@@ -19,7 +19,7 @@ export const getArticleList = (page, pageSize) => {
     pagesize: pageSize
   }
   return axios.request({
-    url: '/article',
+    url: '/articles',
     params: data,
     method: 'get'
   })
@@ -27,7 +27,7 @@ export const getArticleList = (page, pageSize) => {
 
 export const getArticleInfo = (id) => {
   return axios.request({
-    url: '/article/' + id,
+    url: '/articles/' + id,
     method: 'get'
   })
 }
@@ -39,7 +39,7 @@ export const editArticle = (params) => {
     content:params.content
   } */
   return axios.request({
-    url: '/article/' + params.id,
+    url: '/articles/' + params.id,
     // params:params,
     params,
     method: 'put'
@@ -53,7 +53,7 @@ export const delArticle = (id) => {
     content:params.content
   } */
   return axios.request({
-    url: '/article/' + id,
+    url: '/articles/' + id,
     method: 'delete'
   })
 }

@@ -7,7 +7,7 @@ export const getUserList = (page,pagesize) => {
     pagesize:pagesize
   }
   return axios.request({
-    url: '/user/info',
+    url: '/users/info',
     params: data,
     method: 'get'
   })
@@ -15,13 +15,13 @@ export const getUserList = (page,pagesize) => {
 
 export const getUserInfo = (id) => {
   return axios.request({
-    url: '/user/info/'+id,
+    url: '/users/info/'+id,
     method: 'get'
   })
 }
 export const createUserInfo = (data) => {
   return axios.request({
-    url: '/user/info',
+    url: '/users/info',
     data,
     method: 'post'
   })
@@ -29,7 +29,7 @@ export const createUserInfo = (data) => {
 
 export const updateUserInfo = (data,id) => {
   return axios.request({
-    url: '/user/info/'+id,
+    url: '/users/info/'+id,
     data,
     method: 'put'
   })
@@ -39,7 +39,7 @@ export const updateUserInfo = (data,id) => {
 
 export const delUserInfo = (id) => {
   return axios.request({
-    url: '/user/info/'+id,
+    url: '/users/info/'+id,
     method: 'delete'
   })
 }
@@ -51,7 +51,7 @@ export const saveUserStatus = (id,status) => {
     status: status
   }
   return axios.request({
-    url: '/user/status/'+id,
+    url: '/users/status/'+id,
     data,
     method: 'patch'
   })
