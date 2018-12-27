@@ -1,5 +1,12 @@
-import params from '@/config/params'
+import {statusList,levelList} from '@/config/params'
 
 export const getLevelCn = (level) => {
-  return  level in params.levelList?params.levelList[level]:'未知';
+  let label = '未知';
+  for(let i in levelList) {
+    if (levelList[i].value === level) {
+      label =levelList[i].label;
+      break;
+    }
+  }
+  return label
 }

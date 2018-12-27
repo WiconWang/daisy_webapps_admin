@@ -2,19 +2,20 @@
   <div>
     <Row>
       <Col span="8">
-        <Button type="primary" icon="plus-round" @click='addUser'>添加新用户</Button>
+        <Button type="primary" icon="plus-round" @click='addRowModal'>添加记录</Button>
       </Col>
     </Row>
     <Card>
-      <tables ref="tables" searchable search-place="top" v-model="DataList" :columns="columns" />
+      <tables  searchable search-place="top" v-model="DataList" :columns="columns" />
 
       <Page class-name="mTop15" :total="pageTotal" :current="pageNum" :page-size="pageSize" show-total show-elevator
             show-sizer :page-size-opts="[10, 20, 50, 100, 200]" placement="top" @on-change="handlePage"
             @on-page-size-change='handlePageSize'></Page>
       <Button style="margin: 10px 0;" type="primary" @click="exportExcel">导出为Csv文件</Button>
     </Card>
+
     <!--// 弹框 -->
-    <user-edit :modalShow="userLayer" @on-close="closeUserLayer" @modify-finished="fetchData" :propsData="userLayerPropsData"></user-edit>
+    <modify :modalShow="modifyModalStatus" @on-close="closeModal" @modify-finished="fetchTableData" :propsData="modifyRowData"></modify>
   </div>
 </template>
 
@@ -23,12 +24,12 @@ import Tables from '_c/tables'
 // 列表、
 import {getUserList, getUserInfo, saveUserStatus, delUserInfo} from '@/api/front_user'
 import {getLevelCn} from '@/libs/params'
-import UserEdit from './user-edit.vue'
+import Modify from './modify.vue'
 
 export default {
   name: 'tables_page',
   components: {
-    UserEdit,
+    Modify,
     Tables
   },
   data () {
@@ -80,7 +81,7 @@ export default {
                   'on-change': (value) => {
                     // 触发事件是on-change,用双引号括起来，
                     // 参数value是回调值，并没有使用到
-                    this.switchUser(params.row.id,params.row.status)
+                    this.switchRow(params.row.id,params.row.status)
                     // params.index是拿到table的行序列，可以取到对应的表格值
                   }
                 }
@@ -104,105 +105,135 @@ export default {
                   },
                   on: {
                     click: () => {
-                      this.editUser(params.row.id)
+                      this.modifyModal(params.row.id)
                     }
                   }
                 }, '修改'),
-                h('Button', {
+
+                // 删除使用 Poptip 进行一次确认
+                h('Poptip', {
                   props: {
-                    type: 'error',
-                    size: 'small'
+                    confirm: true,
+                    title: '您确定要删除这条数据吗?',
+                    transfer: true
                   },
                   on: {
-                    click: () => {
-                      this.delUser(params.row.id)
+                    'on-ok': () => {
+                      this.delRow(params.row.id)
                     }
                   }
-                }, '删除')
+                }, [
+                  h('Button', {
+                    style: {
+                      margin: '0 3px'
+                    },
+                    props: {
+                      type: 'error',
+                      placement: 'top',
+                      size: 'small'
+                    }
+                  }, '删除')
+                ])
               ])
             }
           ]
         }
       ],
       DataList: [],
-      userLayerPropsData: {},
-      userLayer: false
+      modifyRowData: {},
+      modifyModalStatus: false
     }
   },
   methods: {
 
-    handlePage (value) {
-      this.pageNum = value
-      this.fetchData()
-    },
-    handlePageSize (value) {
-      this.pageSize = value
-      this.fetchData()
-    },
-    fetchData () {
+    // 取API数据
+    fetchTableData () {
       getUserList(this.pageNum, this.pageSize).then(res => {
         this.DataList = res.data.data.list
         this.pageTotal = res.data.data.total
       })
     },
-    fetchUserData (id) {
+    fetchRowData (id) {
       getUserInfo(id).then(res => {
-        this.userLayerPropsData = res.data.data
+        this.modifyRowData = res.data.data
       })
     },
 
-    // 弹框,开启
-    openModal (data) {
-      console.log(data)
-      this.$nextTick(() => {
-        this.userLayer = true
-        this.userLayerPropsData = data
-      })
+    // 页数相关触发
+    handlePage (value) {
+      this.pageNum = value
+      this.fetchTableData()
+    },
+    handlePageSize (value) {
+      this.pageSize = value
+      this.fetchTableData()
     },
 
+    // 导出Excel功能
     exportExcel () {
       this.$refs.tables.exportCsv({
         filename: `table-${(new Date()).valueOf()}.csv`
       })
     },
 
-    // 添加弹框
-    addUser () {
-      this.userLayerPropsData = {}
-      this.openModal({})
+
+    // 添加记录弹框
+    addRowModal () {
+      this.$nextTick(() => {
+        this.modifyModalStatus = true
+        this.modifyRowData = {}
+      })
     },
 
-    // 添加弹框
-    editUser (id) {
-      this.userLayerPropsData = {}
-      this.fetchUserData(id)
-      this.openModal(this.userLayerPropsData)
+    // 修改弹框
+    modifyModal (id) {
+      // 清空数据变量
+      this.modifyRowData = {}
+      //重新拉取本数据
+      this.fetchRowData(id)
+      this.$nextTick(() => {
+        this.modifyModalStatus = true
+      })
     },
 
     // 弹框,关闭
-    closeUserLayer (data) {
+    closeModal (data) {
       this.$nextTick(() => {
-        this.userLayer = false
+        this.modifyModalStatus = false
         if (data == 'close_form') {
           this.DataList = []
-          this.userLayerPropsData = {}
+          this.modifyRowData = {}
           setTimeout(() => {
-            this.fetchData()
+            this.fetchTableData()
           }, 400)
         }
       })
     },
 
-    switchUser (id, status) {
-       saveUserStatus(id, status===1?0:1);
+    // 切换记录状态
+    switchRow (id, status) {
+      let _this = this;
+       saveUserStatus(id, status===1?0:1).then(function (data) {
+         if (data.data.code === 0) {
+           _this.$Message.success('切换成功!');
+           _this.fetchTableData();
+         } else {
+           _this.$Message.error(data.data.message)
+         }
+       })
+         .catch(function (error) {
+           _this.$Message.error(error)
+         })
     },
 
-    delUser(id) {
+    // 删除记录
+    delRow(id) {
       let _this = this;
       delUserInfo(id).then(function (data) {
+        console.log(data);
         if (data.data.code === 0) {
           _this.$Message.success('删除成功!');
-          _this.fetchData();
+          _this.fetchTableData();
         } else {
           _this.$Message.error(data.data.message)
         }
@@ -218,7 +249,7 @@ export default {
 
   },
   mounted () {
-    this.fetchData();
+    this.fetchTableData();
   }
 }
 </script>

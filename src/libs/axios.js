@@ -41,8 +41,9 @@ class HttpRequest {
       if (!Object.keys(this.queue).length) {
         // Spin.show() // 不建议开启，因为界面不友好
       }
-      this.queue[url] = true
-      if (config.method === 'post') {
+      this.queue[url] = true;
+      // POST方法，而且不是上传接口时，需要对数据进行qs处理
+      if (config.method === 'post' && (url.replace('/','').substring(0, 6) !== 'upload')) {
         config.headers = {
           'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8'
         }
