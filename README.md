@@ -11,7 +11,7 @@
 ```
    root /www/wwwroot/vip.dibaozg.cn/dist;
   
-   location  ^~ /user {
+   location  ^~ /admin {
        proxy_set_header X-Scheme $scheme;
        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
        proxy_set_header Host $http_host;

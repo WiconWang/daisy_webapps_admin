@@ -22,7 +22,7 @@
 <script>
 import Tables from '_c/tables'
 // 列表、
-import {getUserList, getUserInfo, saveUserStatus, delUserInfo} from '@/api/front_user'
+import {getMemberList, getMemberInfo, saveMemberStatus, delMemberInfo} from '@/api/member'
 import {getLevelCn} from '@/libs/params'
 import Modify from './modify.vue'
 
@@ -148,13 +148,13 @@ export default {
 
     // 取API数据
     fetchTableData () {
-      getUserList(this.pageNum, this.pageSize).then(res => {
+      getMemberList(this.pageNum, this.pageSize).then(res => {
         this.DataList = res.data.data.list
         this.pageTotal = res.data.data.total
       })
     },
     fetchRowData (id) {
-      getUserInfo(id).then(res => {
+      getMemberInfo(id).then(res => {
         this.modifyRowData = res.data.data
       })
     },
@@ -213,7 +213,7 @@ export default {
     // 切换记录状态
     switchRow (id, status) {
       let _this = this;
-       saveUserStatus(id, status===1?0:1).then(function (data) {
+       saveMemberStatus(id, status===1?0:1).then(function (data) {
          if (data.data.code === 0) {
            _this.$Message.success('切换成功!');
            _this.fetchTableData();
@@ -229,7 +229,7 @@ export default {
     // 删除记录
     delRow(id) {
       let _this = this;
-      delUserInfo(id).then(function (data) {
+      delMemberInfo(id).then(function (data) {
         console.log(data);
         if (data.data.code === 0) {
           _this.$Message.success('删除成功!');

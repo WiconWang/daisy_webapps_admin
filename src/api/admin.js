@@ -1,35 +1,35 @@
 import axios from '@/libs/api.request'
 // 本站前台 用户
 
-export const getUserList = (page,pagesize) => {
+export const getAdminList = (page,pagesize) => {
   const data = {
     page:page,
     pagesize:pagesize
   }
   return axios.request({
-    url: '/users/info',
+    url: '/users/admins',
     params: data,
     method: 'get'
   })
 }
 
-export const getUserInfo = (id) => {
+export const getAdminInfo = (id) => {
   return axios.request({
-    url: '/users/info/'+id,
+    url: '/users/admins/'+id,
     method: 'get'
   })
 }
-export const createUserInfo = (data) => {
+export const createAdminInfo = (data) => {
   return axios.request({
-    url: '/users/info',
+    url: '/users/admins',
     data,
     method: 'post'
   })
 }
 
-export const updateUserInfo = (data,id) => {
+export const updateAdminInfo = (data,id) => {
   return axios.request({
-    url: '/users/info/'+id,
+    url: '/users/admins/'+id,
     data,
     method: 'put'
   })
@@ -37,21 +37,21 @@ export const updateUserInfo = (data,id) => {
 
 
 
-export const delUserInfo = (id) => {
+export const delAdminInfo = (id) => {
   return axios.request({
-    url: '/users/info/'+id,
+    url: '/users/admins/'+id,
     method: 'delete'
   })
 }
 
 
 
-export const saveUserStatus = (id,status) => {
+export const saveAdminStatus = (id,status) => {
   const data = {
     status: status
   }
   return axios.request({
-    url: '/users/status/'+id,
+    url: '/users/status/admins/'+id,
     data,
     method: 'patch'
   })

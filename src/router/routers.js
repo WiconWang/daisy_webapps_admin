@@ -46,12 +46,12 @@ export default [
     ]
   },
   {
-    path: '/users',
-    name: 'menu_users',
+    path: '/members',
+    name: 'menu_members',
     meta: {
       icon: 'logo-buffer',
       title: '用户',
-      // access: ['users'],
+      // access: ['members'],
       hideInMenu: false,
       notCache: true
     },
@@ -59,16 +59,39 @@ export default [
     children: [
       {
         path: 'list',
-        name: 'menu_users_list',
+        name: 'menu_members_list',
         meta: {
           icon: 'md-contacts',
           title: '列表'
         },
-        component: () => import('@/view/users/list.vue')
+        component: () => import('@/view/members/list.vue')
       },
     ]
   },
 
+  {
+    path: '/admins',
+    name: 'menu_admins',
+    meta: {
+      icon: 'ios-people',
+      title: '用户',
+      // access: ['admins'],
+      hideInMenu: false,
+      notCache: true
+    },
+    component: Main,
+    children: [
+      {
+        path: 'list',
+        name: 'menu_admins_list',
+        meta: {
+          icon: 'md-person',
+          title: '列表'
+        },
+        component: () => import('@/view/admins/list.vue')
+      },
+    ]
+  },
   {
     path: '/article',
     name: 'menu_article',

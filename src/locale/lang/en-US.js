@@ -1,8 +1,14 @@
 export default {
   home: 'Home',
   menu_temp: 'forbidden',
-  menu_users: 'users',
-  menu_users_list: 'users list',
+  menu_members: 'members',
+  menu_members_list: 'members list',
+  menu_admins: 'manage',
+  menu_admins_list: 'manage list',
+  menu_article: 'article',
+  menu_article_list: 'article list',
+
+
   components: 'Components',
   count_to_page: 'Count-to',
   tables_page: 'Table',

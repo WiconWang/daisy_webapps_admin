@@ -1,5 +1,13 @@
 export default {
   home: '首頁',
+  menu_temp: '暂未开放',
+  menu_members: '用戶',
+  menu_members_list: '用戶列表',
+  menu_admins: '管理員',
+  menu_admins_list: '管理員列表',
+  menu_article: '文章',
+  menu_article_list: '文章列表',
+
   components: '组件',
   count_to_page: '数字渐变',
   tables_page: '多功能表格',

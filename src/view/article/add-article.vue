@@ -57,7 +57,6 @@ export default {
           {required: true, message: '内容不能为空', trigger: 'change'}
         ]
       },
-      userList: []
     }
   },
   methods: {

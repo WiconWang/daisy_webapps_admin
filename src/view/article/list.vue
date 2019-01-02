@@ -75,7 +75,7 @@
                     },
                     on: {
                       click: () => {
-                        this.editUser(params.row.id)
+                        this.editArticle(params.row.id)
                       }
                     }
                   }, '查看')
@@ -127,12 +127,12 @@
         })
       },
       // 添加弹框
-      editUser(id) {
+      editArticle(id) {
         this.editPropsData = {}
-        this.fetchUserData(id)
+        this.fetchArticleData(id)
         this.openModal(this.editPropsData)
       },
-      fetchUserData(id) {
+      fetchArticleData(id) {
         getArticleInfo(id).then(res => {
           this.editPropsData = res.data.data;
             console.log(res.data.data);

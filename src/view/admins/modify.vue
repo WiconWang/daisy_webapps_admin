@@ -21,7 +21,7 @@
           <Input v-model="formValidate.email" placeholder="输入Email"></Input>
         </FormItem>
 
-        <FormItem label="封面图：">
+        <FormItem label="头像：">
           <Row>
             <Col span="12">
               <Button type="info" icon="ios-cloud-upload-outline">上传图片</Button>
@@ -33,7 +33,7 @@
           <Row>
             <img :src="cover_show" style="width:120px;"/>
           </Row>
-          <b>封面图：本页面显示的顶图，不需要请留空</b>
+          <!--<b>头像：本页面显示的顶图，不需要请留空</b>-->
         </FormItem>
         <FormItem label="过期时间">
           <DatePicker type="datetime" v-model="formValidate.out_date"  @on-change="formValidate.out_date=$event"  format="yyyy-MM-dd" placeholder="请输入过期时间"></DatePicker>
@@ -55,7 +55,7 @@
   </div>
 </template>
 <script>
-import {saveUserInfo,  createUserInfo,  updateUserInfo} from '@/api/front_user'
+import {saveAdminInfo,  createAdminInfo,  updateAdminInfo} from '@/api/admin'
 import {statusList,levelList} from '@/config/params'
 import {uploadImage} from '@/api/common'
 import default_pic from '@/assets/images/default_pic.png'
@@ -75,14 +75,13 @@ export default {
     return {
       levelList: levelList,
       statusList: statusList,
-      uid:0,
+      id:0,
       // 显示的图片地址，绝对路径，注意上传的图片地址是相对路径，所以要分离
       cover_show: default_pic,
       formValidate: {
         mobile: '',
         password: '',
         cover: '',
-        id: 0,
         level: 0,
         email: '',
         out_date: ''
@@ -122,9 +121,9 @@ export default {
   },
   methods: {
     // axios默认异步，此处使用promise封装同步，并把结果返回给resolve,error返回给reject
-    // saveUserPromise (data) {
+    // saveAdminPromise (data) {
     //   return new Promise((resolve, reject) => {
-    //     saveUserInfo(data).then(res => {
+    //     saveAdminInfo(data).then(res => {
     //       resolve(res)
     //     }).catch(err => {
     //       reject(err)
@@ -139,7 +138,7 @@ export default {
         if (valid) {
           let params = this.$data.formValidate
           //检测是否有用户名，如有走新建的方法，否则走修改方法
-          let ajaxFunc = (_this.uid === 0) ? createUserInfo(params) : updateUserInfo(params, _this.uid);
+          let ajaxFunc = (_this.id === 0) ? createAdminInfo(params) : updateAdminInfo(params, _this.id);
           ajaxFunc.then(function (data) {
             if (data.data.code === 0) {
               _this.$Message.success('操作成功!');
@@ -218,6 +217,7 @@ export default {
         this.formValidate.username = value.username;
         this.formValidate.password = value.password;
         this.formValidate.cover = value.cover;
+        this.cover_show = (value.cover.substring(0, 4) === 'http' || value.cover=='') ? value.cover : this.$config.baseDomain + value.cover;
         this.formValidate.level =  value.level;
         this.formValidate.status = value.status;
         this.formValidate.email = value.email;
