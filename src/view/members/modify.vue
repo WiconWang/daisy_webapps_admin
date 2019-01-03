@@ -195,11 +195,11 @@ export default {
       switch (label) {
         // case 'thumbnail':
         //   this.formValidate.thumbnail = content;
-        //   this.thumbnail_show = this.$config.baseDomain + content;
+        //   this.thumbnail_show = this.$config.uploadBase + content;
         //   break;
         case 'cover':
           this.formValidate.cover = content;
-          this.cover_show = this.$config.baseDomain + content;
+          this.cover_show = this.$config.uploadBase + content;
           break;
       }
     }
@@ -217,7 +217,7 @@ export default {
         this.formValidate.username = value.username;
         this.formValidate.password = value.password;
         this.formValidate.cover = value.cover;
-        this.cover_show = (value.cover.substring(0, 4) === 'http' || value.cover=='') ? value.cover : this.$config.baseDomain + value.cover;
+        this.cover_show = (value.cover.substring(0, 4) === 'http' || value.cover=='') ? value.cover : this.$config.uploadBase + value.cover;
         this.formValidate.level =  value.level;
         this.formValidate.status = value.status;
         this.formValidate.email = value.email;
