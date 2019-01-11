@@ -230,7 +230,7 @@ export default {
     delRow(id) {
       let _this = this;
       delMemberInfo(id).then(function (data) {
-        console.log(data);
+        // console.log(data);
         if (data.data.code === 0) {
           _this.$Message.success('删除成功!');
           _this.fetchTableData();

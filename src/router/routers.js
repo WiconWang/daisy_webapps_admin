@@ -70,6 +70,29 @@ export default [
   },
 
   {
+    path: '/channels',
+    name: 'menu_channels',
+    meta: {
+      icon: 'ios-people',
+      title: '用户',
+      // access: ['channels'],
+      hideInMenu: false,
+      notCache: true
+    },
+    component: Main,
+    children: [
+      {
+        path: 'list',
+        name: 'menu_channels_list',
+        meta: {
+          icon: 'md-person',
+          title: '列表'
+        },
+        component: () => import('@/view/channels/list.vue')
+      },
+    ]
+  },
+  {
     path: '/admins',
     name: 'menu_admins',
     meta: {
@@ -116,6 +139,26 @@ export default [
     ]
   },
 
+  {
+    path: '/message',
+    name: 'message',
+    component: Main,
+    meta: {
+      hideInBread: true,
+      hideInMenu: true
+    },
+    children: [
+      {
+        path: 'message_page',
+        name: 'message_page',
+        meta: {
+          icon: 'md-notifications',
+          title: '消息中心'
+        },
+        component: () => import('@/view/message/index.vue')
+      }
+    ]
+  },
 
   {
     path: '/401',

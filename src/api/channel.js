@@ -13,28 +13,24 @@ export const addChannel = (params) => {
   })
 }
 /*获取列表*/
-export const getChannelList = (page, pageSize) => {
-  const data = {
-    page: page,
-    pagesize: pageSize
-  }
+export const getChannelList = () => {
   return axios.request({
     url: '/channels',
-    params: data,
+    params: {},
     method: 'get'
   })
 }
 
 
 /*修改*/
-export const editChannel = (params) => {
+export const editChannel = (params,id) => {
   /* const data = {
     cid:params.cid,
     title:params.title,
     content:params.content
   } */
   return axios.request({
-    url: '/channels/' + params.id,
+    url: '/channels/' + id,
     // params:params,
     params,
     method: 'put'
@@ -48,3 +44,12 @@ export const getChannel = (id) => {
     method: 'get'
   })
 }
+
+
+export const delChannel = (id) => {
+  return axios.request({
+    url: '/channels/'+id,
+    method: 'delete'
+  })
+}
+

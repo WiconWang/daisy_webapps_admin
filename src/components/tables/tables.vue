@@ -267,7 +267,7 @@ export default {
     },
     value (val) {
       this.handleTableData()
-      this.handleSearch()
+      if (this.searchable) this.handleSearch()
     }
   },
   mounted () {
