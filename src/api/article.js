@@ -1,6 +1,6 @@
 import axios from '@/libs/api.request'
 
-export const addArticle = (params) => {
+export const addArticle = (data) => {
   /* const data = {
     cid:params.cid,
     title:params.title,
@@ -8,7 +8,7 @@ export const addArticle = (params) => {
   } */
   return axios.request({
     url: '/articles',
-    params,
+    data,
     method: 'post'
   })
 }
